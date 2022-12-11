@@ -11,19 +11,20 @@ public class ATM
 {   
     /// <summary>
     /// Main function, that asks user to input PIN-number. User can check account balance, deposit money, withdraw money and see latest 5 transactions.
-    /// If PIN-number is incorrect, user is logged out.
+    /// If PIN-number is incorrect, user is 'logged out'.
     /// </summary>
     public static void Main()
     {      
         //Variables for PIN-number, account balance, amount of transactions and latest transactions
         int PIN = 1139;
         double balance = 5467.60;
-        List<double> transactions = new List<double>(5);    //List for storing 5 latest transactions
+        List<double> transactions = new List<double>();    //List for storing 5 latest transactions
+        bool isRunning = true; //Variable for closing ATM-machine
 
         Console.WriteLine("Enter PIN-number :");
         int givenPIN = Convert.ToInt32(Console.ReadLine());
 
-        while (true)
+        while (isRunning == true)
         {
             if (givenPIN == PIN)
             {
@@ -45,13 +46,15 @@ public class ATM
                     case "2":
                         Console.Write("Enter money to be deposited: ");
                         double depositedMoney = double.Parse(Console.ReadLine());
-                        transactions.Add(depositedMoney); //Transaction is added to the list of transactíons
+                        LatestTransactions(transactions, depositedMoney);
+                        //transactions.Add(depositedMoney); //Transaction is added to the list of transactíons
                         Console.WriteLine("Account's balance is now " + Deposit(balance, depositedMoney));   //Function Deposit is called  
                         break;
                     case "3":
                         Console.Write("Enter mnoney to be withdrawn: ");
                         double withdrawnMoney = double.Parse(Console.ReadLine());
-                        transactions.Add(withdrawnMoney);
+                        LatestTransactions(transactions, withdrawnMoney);
+                        //transactions.Add(-withdrawnMoney);
                         if (withdrawnMoney > 1000)
                         {
                             Console.WriteLine("You can't withdraw more than 1000 at a time");
@@ -62,7 +65,11 @@ public class ATM
                         break;
                     case"4":
                         Console.WriteLine("Latest transactions : " + String.Join(", ", transactions)); //List of 5 latest transactions is written out
-                        break;  
+                        break;
+                    case "5":
+                        Console.WriteLine("Thank you for using ATM-machine");
+                        isRunning = false;
+                        break;
                     default:
                         Console.WriteLine("Enter a valid number"); //If user's input is invalid, program asks user to inpput a valid number
                         break;
@@ -73,6 +80,7 @@ public class ATM
             {
                 //käyttäjä kirjattava ulos
                 Console.WriteLine("Wrong PIN");
+                isRunning = false;
             }
         }
     }
@@ -111,4 +119,9 @@ public class ATM
         return newBalance;
     }
 
+    public static List<double> LatestTransactions(List<double> transactions, double money)
+    {
+        transactions.Add(money);
+        return transactions;
+    }
 }
