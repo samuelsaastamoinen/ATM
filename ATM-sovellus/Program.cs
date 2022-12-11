@@ -18,7 +18,7 @@ public class ATM
         //Variables for PIN-number, account balance, amount of transactions and latest transactions
         int PIN = 1139;
         double balance = 5467.60;
-        List<double> transactions = new List<double>();    //List for storing 5 latest transactions
+        List<double> transactions = new List<double>();   //List for storing 5 latest transactions
         bool isRunning = true; //Variable for closing ATM-machine
 
         Console.WriteLine("Enter PIN-number :");
@@ -119,9 +119,11 @@ public class ATM
         return newBalance;
     }
 
-    public static List<double> LatestTransactions(List<double> transactions, double money)
+    public static void LatestTransactions(List<double> transactions, double money)
     {
-        transactions.Add(money);
-        return transactions;
+        if (transactions.Count < 5)
+            transactions.Add(money);
+        else
+            return;
     }
 }
