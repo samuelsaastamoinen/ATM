@@ -18,7 +18,7 @@ public class ATM
         //Variables for PIN-number, account balance, amount of transactions and latest transactions
         int PIN = 1139;
         double balance = 5467.60;
-        List<double> transactions = new List<double>();   //List for storing 5 latest transactions
+        List<string> transactions = new List<string>();   //List for storing 5 latest transactions
         bool isRunning = true; //Variable for closing ATM-machine
 
         Console.WriteLine("Enter PIN-number :");
@@ -46,14 +46,14 @@ public class ATM
                     case "2":
                         Console.Write("Enter money to be deposited: ");
                         double depositedMoney = double.Parse(Console.ReadLine());
-                        LatestTransactions(transactions, depositedMoney);
-                        //transactions.Add(depositedMoney); //Transaction is added to the list of transactíons
+                        LatestTransactions(transactions, depositedMoney, operation);
+                        //Transaction is added to the list of transactíons
                         Console.WriteLine("Account's balance is now " + Deposit(balance, depositedMoney));   //Function Deposit is called  
                         break;
                     case "3":
                         Console.Write("Enter mnoney to be withdrawn: ");
                         double withdrawnMoney = double.Parse(Console.ReadLine());
-                        LatestTransactions(transactions, withdrawnMoney);
+                        LatestTransactions(transactions, withdrawnMoney, operation);
                         //transactions.Add(-withdrawnMoney);
                         if (withdrawnMoney > 1000)
                         {
@@ -78,7 +78,6 @@ public class ATM
             }
             else //If PIN-number doesn't match user's PIN-number, user is logged out
             {
-                //käyttäjä kirjattava ulos
                 Console.WriteLine("Wrong PIN");
                 isRunning = false;
             }
@@ -119,10 +118,24 @@ public class ATM
         return newBalance;
     }
 
-    public static void LatestTransactions(List<double> transactions, double money)
+    /// <summary>
+    /// Function that keeps track of 5 latest actions on the account.
+    /// </summary>
+    /// <param name="transactions">List of transactions</param>
+    /// <param name="money">Deposited or withdrawn money</param>
+    public static void LatestTransactions(List<string> transactions, double money, string operation)
     {
+        string numberAsString = money.ToString();
+
         if (transactions.Count < 5)
-            transactions.Add(money);
+            if (operation == "2")
+            {
+                transactions.Add("+ " + money);
+            }
+            else
+            {
+                transactions.Add("- " + money);
+            }
         else
             return;
     }
